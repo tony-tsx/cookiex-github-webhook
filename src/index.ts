@@ -30,7 +30,7 @@ interface Config {
 }
 
 app.all( '*', ( req, res ) => {
-  const event = req.headers['X-GitHub-Event']
+  const event = req.headers['X-GitHub-Event'] || req.headers['X-GitHub-Event'.toLowerCase()]
   console.log( `Headers: ${Object.keys( req.headers ).join( ', ' )}` )
   if ( !event ) return res.status( 301 ).json( { message: 'Required event from github' } )
 

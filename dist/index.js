@@ -17,7 +17,7 @@ app.use(body_parser_1.default.urlencoded({ extended: true }));
 app.use(body_parser_1.default.json());
 app.all('*', (req, res) => {
     var _a, _b;
-    const event = req.headers['X-GitHub-Event'];
+    const event = req.headers['X-GitHub-Event'] || req.headers['X-GitHub-Event'.toLowerCase()];
     console.log(`Headers: ${Object.keys(req.headers).join(', ')}`);
     if (!event)
         return res.status(301).json({ message: 'Required event from github' });
