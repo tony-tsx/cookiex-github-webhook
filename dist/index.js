@@ -18,12 +18,15 @@ app.use(body_parser_1.default.json());
 app.all('*', (req, res) => {
     var _a, _b;
     const event = req.headers['X-GitHub-Event'];
+    if (!event)
+        return res.status(301).json({ message: 'Required event from github' });
+    console.log(`Receive event ${event}`);
     const body = req.body;
     switch (event) {
         case 'ping': return res.status(204).json({});
         case 'push': {
             if (!fs_1.default.existsSync('config.json'))
-                return res.status(304).json({ message: 'Config Json not exists' });
+                return res.status(306).json({ message: 'Config Json not exists' });
             try {
                 const contentConfig = fs_1.default.readFileSync('config.json').toString();
                 const config = JSON.parse(contentConfig);
@@ -56,13 +59,13 @@ app.all('*', (req, res) => {
                     return res.status(200).json({});
                 }
                 else
-                    return res.status(304).json({ message: 'Repositories is null or not is array' });
+                    return res.status(301).json({ message: 'Repositories is null or not is array' });
             }
             catch (_d) {
-                return res.status(304).json({ message: 'Internal Error' });
+                return res.status(500).json({ message: 'Internal Error' });
             }
         }
-        default: return res.status(304).json({ message: 'Method not allowed' });
+        default: return res.status(302).json({ message: 'Method not allowed' });
     }
 });
 const port = yargs_1.default.argv.port || 8001;

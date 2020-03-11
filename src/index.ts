@@ -31,11 +31,14 @@ interface Config {
 
 app.all( '*', ( req, res ) => {
   const event = req.headers['X-GitHub-Event']
+  if ( !event ) return res.status( 301 ).json( { message: 'Required event from github' } )
+
+  console.log( `Receive event ${event}` )
   const body = req.body
   switch ( event ) {
     case 'ping': return res.status( 204 ).json( {} )
     case 'push': {
-      if ( !fs.existsSync( 'config.json' ) ) return res.status( 304 ).json( { message: 'Config Json not exists' } )
+      if ( !fs.existsSync( 'config.json' ) ) return res.status( 306 ).json( { message: 'Config Json not exists' } )
       try {
         const contentConfig = fs.readFileSync( 'config.json' ).toString()
         const config: Config = JSON.parse( contentConfig )
@@ -64,12 +67,12 @@ app.all( '*', ( req, res ) => {
           return res.status( 200 ).json( {} )
         }
 
-        else return res.status( 304 ).json( { message: 'Repositories is null or not is array' } )
+        else return res.status( 301 ).json( { message: 'Repositories is null or not is array' } )
       } catch {
-        return res.status( 304 ).json( { message: 'Internal Error' } )
+        return res.status( 500 ).json( { message: 'Internal Error' } )
       }
     }
-    default: return res.status( 304 ).json( { message: 'Method not allowed' } )
+    default: return res.status( 302 ).json( { message: 'Method not allowed' } )
   }
 
 } )
