@@ -1,0 +1,10 @@
+{
+  "system": {
+    "commandSeparator": "&&"
+  },
+  "repositories": [ {
+    "url": "",
+    "path": "",
+    "execute": []
+  } ]
+}
