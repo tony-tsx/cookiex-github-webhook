@@ -25,9 +25,9 @@ app.all('*', (req, res) => {
             try {
                 const contentConfig = fs_1.default.readFileSync('config.json').toString();
                 const config = JSON.parse(contentConfig);
-                const repositoryUrl = body.repository.html_url;
+                const repositoryFullName = body.repository.full_name;
                 if (Array.isArray(config.repositories)) {
-                    const filtred = config.repositories.filter(repository => repository.url === repositoryUrl);
+                    const filtred = config.repositories.filter(repository => repository.fullname === repositoryFullName);
                     for (const repository of filtred) {
                         if (!repository.path)
                             continue;

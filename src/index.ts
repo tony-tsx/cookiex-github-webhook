@@ -12,7 +12,7 @@ app.use( bodyparser.urlencoded( { extended: true } ) )
 app.use( bodyparser.json() )
 
 interface RepositoryInfo {
-  url: string
+  fullname: string
   execute: string | string[]
   path: string
   error?: string
@@ -38,10 +38,10 @@ app.all( '*', ( req, res ) => {
       try {
         const contentConfig = fs.readFileSync( 'config.json' ).toString()
         const config: Config = JSON.parse( contentConfig )
-        const repositoryUrl = body.repository.html_url
+        const repositoryFullName = body.repository.full_name
 
         if ( Array.isArray( config.repositories ) ) {
-          const filtred = config.repositories.filter( repository => repository.url === repositoryUrl )
+          const filtred = config.repositories.filter( repository => repository.fullname === repositoryFullName )
           for ( const repository of filtred ) {
             if ( !repository.path ) continue
             const commands = [ `cd ${repository.path}`, ... Array.isArray( repository.execute ) ? repository.execute : [ repository.execute ] ]

@@ -3,7 +3,7 @@
     "commandSeparator": "&&"
   },
   "repositories": [ {
-    "url": "",
+    "fullname": "",
     "path": "",
     "execute": []
   } ]
