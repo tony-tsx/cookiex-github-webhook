@@ -4,9 +4,11 @@ import fs from 'fs'
 import bodyparser from 'body-parser'
 import cors from 'cors'
 import { execSync } from 'child_process'
+import morgan from 'morgan'
 
 const app = express()
 
+app.use( morgan( 'short' ) )
 app.use( cors() )
 app.use( bodyparser.urlencoded( { extended: true } ) )
 app.use( bodyparser.json() )
@@ -30,7 +32,6 @@ interface Config {
 app.all( '*', ( req, res ) => {
   const event = req.headers['X-GitHub-Event']
   const body = req.body
-
   switch ( event ) {
     case 'ping': return res.status( 204 ).json( {} )
     case 'push': {
